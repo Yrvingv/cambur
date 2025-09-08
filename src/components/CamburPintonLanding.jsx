@@ -15,11 +15,10 @@ import { motion } from "framer-motion"
 
 // Reemplazo del componente Logo (usa BASE_URL para que funcione en GitHub Pages)
 function Logo() {
-  const logoSrc = `${import.meta.env.BASE_URL}media/logo-cambur.svg`; // si tu archivo es .png/.webp, cambia la extensión
   return (
     <a href="#inicio" className="flex items-center gap-2 select-none">
       <img
-        src={logoSrc}
+        src={media("logo-cambur.svg")} // public/media/logo-cambur.svg
         alt="Cambur Pintón"
         className="h-8 w-auto"
         loading="eager"
@@ -29,6 +28,7 @@ function Logo() {
     </a>
   );
 }
+
 
 
 function TagBadge({ children }) {
