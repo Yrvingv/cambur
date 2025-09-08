@@ -19,7 +19,7 @@ function Logo() {
   return (
     <a href="#inicio" className="flex items-center gap-2 select-none">
       <img
-        src={logoSrc}
+        src="media/logo-cambur.svg"
         alt="Cambur Pintón"
         className="h-8 w-auto"
         loading="eager"
