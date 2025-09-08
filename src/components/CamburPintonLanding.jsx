@@ -12,13 +12,15 @@ import { motion } from "framer-motion"
 // 2) /public/media/cocina-poster.jpg             (portada del video, sin texto)
 // 3) index.html → añade las fuentes y metatags SEO/OG que te dejo al final
 // -----------------------------------------------------------------------------
+// Helper para construir rutas que funcionen en GitHub Pages (/cambur/)
+const media = (file) => `${import.meta.env.BASE_URL}media/${encodeURIComponent(file)}`;
 
 // Reemplazo del componente Logo (usa BASE_URL para que funcione en GitHub Pages)
 function Logo() {
   return (
     <a href="#inicio" className="flex items-center gap-2 select-none">
       <img
-        src={media("logo-cambur.svg")} // public/media/logo-cambur.svg
+        src={media("logo-cambur.svg")}  // public/media/logo-cambur.svg
         alt="Cambur Pintón"
         className="h-8 w-auto"
         loading="eager"
