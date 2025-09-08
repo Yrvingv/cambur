@@ -13,22 +13,23 @@ import { motion } from "framer-motion"
 // 3) index.html → añade las fuentes y metatags SEO/OG que te dejo al final
 // -----------------------------------------------------------------------------
 
+// Reemplazo del componente Logo (usa BASE_URL para que funcione en GitHub Pages)
 function Logo() {
+  const logoSrc = `${import.meta.env.BASE_URL}media/logo-cambur.svg`; // si tu archivo es .png/.webp, cambia la extensión
   return (
     <a href="#inicio" className="flex items-center gap-2 select-none">
       <img
-        src="/media/logo.svg"   // poné tu archivo aquí (public/media/)
+        src={logoSrc}
         alt="Cambur Pintón"
-        className="h-14 w-auto"
+        className="h-8 w-auto"
         loading="eager"
         decoding="async"
       />
-      <span className="font-extrabold tracking-tight text-xl md:text-2xl">
-        Cambur Pintón
-      </span>
+      <span className="font-extrabold tracking-tight text-xl md:text-2xl">Cambur Pintón</span>
     </a>
   );
 }
+
 
 function TagBadge({ children }) {
   return (
@@ -126,7 +127,7 @@ function VideoSection() {
                 poster="/media/cocina-poster.jpg"
                 aria-label="Video: nuestra propuesta de comida artesanal saludable"
               >
-                <source src="/media/NUESTRO PRODUCTO.mp4" type="video/mp4" />
+                <source src={`${import.meta.env.BASE_URL}media/NUESTRO PRODUCTO.mp4`} type="video/mp4" /><source/>
                 Tu navegador no soporta video HTML5.
               </video>
             </div>
@@ -252,7 +253,7 @@ export default function CamburPintonLanding() {
           >
             <div className="aspect-[4/5] w-full  rotate-[5deg] scale-105 overflow-hidden rounded-[2rem] border border-emerald-200 shadow-[0_30px_120px_-20px_rgba(0,0,0,0.25)]">
               <img
-                src="/media/hero.png"
+                src={`${import.meta.env.BASE_URL}media/hero.png`}
                 alt="Arepas y hamburguesas saludables, listas para calentar"
                 className="h-full w-full object-cover"
                 loading="eager"
