@@ -22,7 +22,7 @@ function Logo() {
       <img
         src={media("logo-cambur.svg")}  // public/media/logo-cambur.svg
         alt="Cambur Pintón"
-        className="h-8 w-auto"
+        className="h-14 w-auto"
         loading="eager"
         decoding="async"
       />
