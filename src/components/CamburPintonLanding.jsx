@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { motion } from "framer-motion"
+import { useRef, useEffect } from "react"
 
 // Landing page "Cambur Pintón" — comida artesanal saludable (con VIDEO) y Poppins
 // - Stack: React + Tailwind + framer-motion (microanimaciones suaves)
@@ -104,8 +105,38 @@ function ProductCard({ name, desc, price = "Consultar", tag }) {
 
 function VideoSection() {
   const waMsg = encodeURIComponent(
-    "Hola Cambur Pintón 👋 Acabo de ver el video y quiero pedir arepas/hamburguesas/salsas. ¿Me pasás opciones y precio?"
-  );
+    "Hola Cambur Pintón 👋 Acabo de ver el video y quiero pedir arepas. ¿Me pasás opciones y precio?"
+  )
+
+  const videoRef = useRef(null)
+
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+
+    const forceMute = () => {
+      if (!v.muted || v.volume !== 0) {
+        v.muted = true
+        v.volume = 0
+      }
+    }
+
+    // Estado inicial + autoplay
+    forceMute()
+    v.play().catch(() => {}) // si el navegador bloquea, quedará listo para play tras primer gesto
+
+    // Mantenerlo siempre muteado
+    v.addEventListener("loadedmetadata", forceMute)
+    v.addEventListener("play", forceMute)
+    v.addEventListener("volumechange", forceMute)
+
+    return () => {
+      v.removeEventListener("loadedmetadata", forceMute)
+      v.removeEventListener("play", forceMute)
+      v.removeEventListener("volumechange", forceMute)
+    }
+  }, [])
+
   return (
     <section id="nuestro-producto" className="mx-auto max-w-7xl px-4 py-16 md:py-24">
       <SectionTitle
@@ -117,19 +148,22 @@ function VideoSection() {
       <div className="mt-8 grid gap-8 md:grid-cols-5">
         {/* Columna del VIDEO */}
         <div className="md:col-span-3">
-          {/* Contenedor para reducir el ancho visible del video */}
           <div className="mx-auto max-w-[480px] md:max-w-[520px]">
             <div className="relative overflow-hidden rounded-3xl border border-stone-200 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.25)]">
-              {/* Ubicá tu archivo en /public/media/NUESTRO PRODUCTO.mp4 y el poster en /public/media/cocina-poster.jpg */}
+              {/* Archivo en /public/media/nuestro-producto.mp4 y poster en /public/media/cocina-poster.jpg */}
               <video
+                ref={videoRef}
                 className="w-full h-auto"
                 controls
-                preload="none"
+                autoPlay
+                muted
+                defaultMuted
                 playsInline
-                poster="/media/cocina-poster.jpg"
+                preload="metadata"
+                poster={`${import.meta.env.BASE_URL}media/cocina-poster.jpg`}
                 aria-label="Video: nuestra propuesta de comida artesanal saludable"
               >
-                <source src={`${import.meta.env.BASE_URL}media/NUESTRO PRODUCTO.mp4`} type="video/mp4" /><source/>
+                <source src={`${import.meta.env.BASE_URL}media/nuestro-producto.mp4`} type="video/mp4" />
                 Tu navegador no soporta video HTML5.
               </video>
             </div>
@@ -141,8 +175,8 @@ function VideoSection() {
         <div className="md:col-span-2 self-center">
           <ul className="space-y-3 text-stone-700">
             <li className="flex items-start gap-3"><span>✅</span> Arepas al vacío (sin TACC), listas para freezer o plancha.</li>
-            <li className="flex items-start gap-3"><span>✅</span> Hamburguesas saludables congeladas, cocción rápida.</li>
-            <li className="flex items-start gap-3"><span>✅</span> Salsas caseras, ingredientes reales y sin colorantes.</li>
+            <li className="flex items-start gap-3"><span>✅</span> Sacás de la heladera, las calentás y listo, cocción rápida.</li>
+            <li className="flex items-start gap-3"><span>✅</span> Ingredientes saludables, sin conservantes, ni colorantes.</li>
           </ul>
           <CTAButton
             href={`https://wa.me/5493813594194?text=${waMsg}`}
@@ -154,8 +188,9 @@ function VideoSection() {
         </div>
       </div>
     </section>
-  );
+  )
 }
+
 
 export default function CamburPintonLanding() {
   const [open, setOpen] = useState(false)
@@ -228,10 +263,10 @@ export default function CamburPintonLanding() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <TagBadge>Comida artesanal saludable</TagBadge>
             <h1 className="mt-3 text-4xl md:text-6xl font-black tracking-tight leading-[1.05]">
-              Sin vueltas: rico, real y práctico
+              Arepas listas en 7 minutos.
             </h1>
             <p className="mt-4 text-lg text-stone-700 md:max-w-[56ch]">
-              Arepas al vacío (sin TACC), hamburguesas saludables para freezer y salsas caseras. Hecho en casa, con ingredientes reales.
+              Arepas hechas en casa (sin TACC), Packs al vacío x3 · x6 (-10%) · x12 (-15% + envío). Entregas hoy 12–15 y 19–21.
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <CTAButton href="#nuestro-producto" ariaLabel="Ir a ver el video">Ver video</CTAButton>
@@ -240,9 +275,9 @@ export default function CamburPintonLanding() {
               </CTAButton>
             </div>
             <ul className="mt-6 grid grid-cols-2 gap-3 text-sm text-stone-600">
-              <li className="flex items-center gap-2">✅ Arepas sin TACC</li>
+              <li className="flex items-center gap-2">✅ Ingredientes sin TACC</li>
               <li className="flex items-center gap-2">✅ Freezer-friendly</li>
-              <li className="flex items-center gap-2">✅ Ingredientes reales</li>
+              <li className="flex items-center gap-2">✅ Receta tradicional</li>
               <li className="flex items-center gap-2">✅ Envíos en Tucumán</li>
             </ul>
           </motion.div>
@@ -353,13 +388,13 @@ export default function CamburPintonLanding() {
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {[{
             q: "Las arepas al vacío me salvan el desayuno: 5 minutos y quedan perfectas.",
-            a: "Lucía · San Miguel",
+            a: "Yennifer · La Florida",
           },{
-            q: "Las hamburguesas del freezer tienen textura casera, no parecen de fábrica.",
-            a: "Agustín · Yerba Buena",
+            q: "Excelente idea la de las arepas al vacío: Las amo.",
+            a: "Angela · Yerba Buena",
           },{
-            q: "La guasacaca es un viaje. Se nota que usan ingredientes de verdad.",
-            a: "Caro · Tafí Viejo",
+            q: "Ahorro mucho tiempo porque ya estan listas, solo calentar y comer.",
+            a: "Soliver · Tafí Viejo",
           }].map((t, i) => (
             <motion.blockquote
               key={i}
@@ -407,7 +442,7 @@ export default function CamburPintonLanding() {
 
           <div className="rounded-3xl border border-stone-200 bg-white p-6 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.25)]">
             <div className="space-y-4 md:space-y-6">
-              <h3 className="text-lg font-bold">Seguinos</h3>
+              <h3 className="text-lg font-bold">Seguínos</h3>
 
               <div className="flex items-center gap-5">
                 {/* Instagram */}
